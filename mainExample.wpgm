@@ -1,0 +1,62 @@
+import wollok.game.*
+import jugador.*
+
+program bloqueJuego {
+	game.title("bloqueJuego")
+	game.height(10)
+	game.width(20)
+
+	// add assets in asset folder, for example, for the background
+  // game.boardGround("fondo2.jpg")
+
+	// game.showAttributes(pepita) //Debug
+
+
+	// Limitar por tiempo
+	// game.schedule(5000, {game.stop()})
+
+	game.addVisual(jugador)
+
+
+	config.configTeclado()
+
+
+	// Logica antes de esta sentencia.
+	game.start()
+}
+
+
+
+object config{
+	var estaActivoMovete = false
+
+
+	method activarMovete(){
+		if (not estaActivoMovete){
+
+			game.onTick(1100, "movete", {
+			jugador.cambiarDePosicion()
+			})
+			
+			
+		}	
+		estaActivoMovete = true
+	}
+
+	method desactivarMovete(){
+		if (estaActivoMovete){
+			game.removeTickEvent("movete")
+			
+		}
+		estaActivoMovete = false
+
+	}
+
+	method configTeclado(){
+		keyboard.a().onPressDo({ self.activarMovete() })
+		keyboard.z().onPressDo({ self.desactivarMovete() })
+	}
+
+
+
+}
